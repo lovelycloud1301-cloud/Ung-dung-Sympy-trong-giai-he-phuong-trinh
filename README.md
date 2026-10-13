@@ -1,0 +1,1 @@
+# Ung-dung-Sympy-trong-giai-he-phuong-trinh
