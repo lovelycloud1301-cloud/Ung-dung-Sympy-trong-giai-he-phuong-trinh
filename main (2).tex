@@ -1,0 +1,584 @@
+\documentclass[13pt,a4paper]{article}
+\usepackage[utf8]{vietnam}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{tasks}
+\usepackage{siunitx}
+\usepackage{graphicx}
+\usepackage[left=3.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
+\linespread{1.3}
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+
+\begin{center}
+
+{\bfseries\large TRƯỜNG ĐẠI HỌC SƯ PHẠM, ĐẠI HỌC HUẾ}
+
+\vspace{0.15cm}
+
+{\bfseries\large KHOA TOÁN HỌC}
+
+\vspace{2.8cm}
+
+{\bfseries\Large ĐỀ TÀI:}
+
+\vspace{0.5cm}
+
+{\bfseries\huge
+ỨNG DỤNG SYMPY TRONG GIẢI HỆ PHƯƠNG TRÌNH
+}
+
+\vspace{2.8cm}
+
+\begin{center}
+\Large % Tăng kích thước chữ cho toàn bộ phần nhóm và thành viên
+\begin{tabular}{ll}
+\textbf{Thành viên:}  & Hoàng Thúy An \\
+                      & Lê Vũ Kim Hồng \\
+                      & Lê Phan Quỳnh Trang \\
+                      & Nguyễn Vy Thảo\\
+\textbf{Nhóm:}        & 9 \\
+\end{tabular}
+\end{center}
+
+
+\vfill
+
+\begin{center}
+\textit{Huế, 9/2026}
+\end{center}
+
+\end{titlepage}
+\tableofcontents
+\newpage  % <--- ĐẶT LỆNH NÀY Ở ĐÂY để ngắt trang, tách biệt hoàn toàn mục lục và nội dung
+\section*{LỜI NÓI ĐẦU}
+\addcontentsline{toc}{section}{LỜI NÓI ĐẦU}
+Trong học tập Toán, việc giải các hệ phương trình là một nội dung quen thuộc và được sử dụng trong nhiều dạng bài khác nhau. Bên cạnh các phương pháp giải truyền thống, hiện nay chúng ta có thể sử dụng các công cụ lập trình để hỗ trợ quá trình tính toán và kiểm tra kết quả. Điều này giúp việc giải toán trở nên thuận tiện hơn, đồng thời tạo cơ hội để vận dụng kiến thức toán học vào công nghệ.\\
+\noindent \textbf{SymPy} là một thư viện của Python hỗ trợ tính toán toán học, trong đó có nhiều lệnh phục vụ cho việc giải phương trình và hệ phương trình. Việc tìm hiểu cách sử dụng SymPy không chỉ giúp giải quyết các bài toán nhanh chóng mà còn giúp người học làm quen với việc sử dụng lập trình để hỗ trợ học tập môn Toán.\\
+\noindent Từ đó, nhóm lựa chọn đề tài \textbf{“Ứng dụng SymPy trong giải hệ phương trình”} với mong muốn tìm hiểu những kiến thức cơ bản về SymPy, các lệnh thường được sử dụng để giải hệ phương trình và cách áp dụng vào một số bài toán cụ thể.\\
+\noindent Nội dung đề tài được chia thành ba chương. \textbf{Chương 1} giới thiệu khái quát về SymPy và bài toán giải hệ phương trình. \textbf{Chương 2} trình bày các lệnh SymPy liên quan đến giải hệ phương trình và một số lưu ý khi sử dụng. \textbf{Chương 3} tập trung vào việc áp dụng các lệnh đã tìm hiểu để giải một số hệ phương trình và bài toán cụ thể.\\
+\noindent Trong quá trình thực hiện, do kiến thức và kinh nghiệm còn hạn chế nên bài làm khó tránh khỏi những thiếu sót. Nhóm rất mong nhận được sự góp ý của giảng viên để đề tài được hoàn thiện hơn.\\
+\noindent Nhóm xin chân thành cảm ơn!
+\newpage
+\section{Chương 1. GIỚI THIỆU CHUNG VỀ SYMPY VÀ GIẢI HỆ PHƯƠNG TRÌNH}
+\subsection{Giới thiệu về SymPy}
+\subsubsection{SymPy là gì?}
+SymPy là một thư viện mã nguồn mở được sử dụng để thực hiện các phép tính toán học dưới dạng ký hiệu. Khác với việc chỉ tính toán các giá trị số, SymPy cho phép làm việc trực tiếp với các biến, biểu thức và phương trình toán học.\\
+\noindent SymPy cung cấp nhiều công cụ phục vụ cho các lĩnh vực khác nhau của toán học như đại số, giải tích, phương trình, hệ phương trình, ma trận,... Trong đó, các chức năng liên quan đến giải phương trình và hệ phương trình là một trong những nội dung được sử dụng trong đề tài này.\\
+\noindent Ví dụ, với biểu thức
+\begin{center}
+    $(x+1)^2$,
+\end{center}
+SymPy có thể thực hiện khai triển để thu được
+\begin{center}
+    $x^2+2x+1.$
+\end{center}
+Ngoài ra, SymPy còn có thể hỗ trợ tìm nghiệm của các phương trình và hệ phương trình thông qua các lệnh phù hợp.
+\subsubsection{Đặc điểm của SymPy}
+Một số đặc điểm nổi bật của SymPy gồm:
+\begin{itemize}[itemsep=4pt, parsep=2pt]
+    \item \textbf{Mã nguồn mở:} SymPy được cung cấp miễn phí và có thể được sử dụng trong nhiều mục đích học tập, nghiên cứu và tính toán.
+    \item \textbf{Tính toán ký hiệu:} SymPy có khả năng làm việc với các biến và biểu thức toán học dưới dạng ký hiệu thay vì chỉ xử lý các giá trị số.
+    \item \textbf{Hỗ trợ nhiều lĩnh vực toán học:} SymPy cung cấp các công cụ cho đại số, giải tích, phương trình, ma trận, xác suất và một số nội dung toán học khác.
+    \item \textbf{Có nhiều lệnh phục vụ giải phương trình:} SymPy cung cấp các lệnh như \texttt{solve()}, \texttt{linsolve()}, \texttt{nonlinsolve()},... giúp xử lý nhiều dạng phương trình và hệ phương trình.
+    \item \textbf{Kết quả có dạng toán học rõ ràng:} Các kết quả được biểu diễn dưới dạng ký hiệu, giúp người sử dụng dễ dàng quan sát và tiếp tục thực hiện các phép tính khác.
+\end{itemize}
+\subsubsection{Ưu điểm khi sử dụng SymPy trong tính toán toán học}
+Việc sử dụng SymPy mang lại một số thuận lợi trong quá trình giải quyết các bài toán toán học.\\
+
+\noindent Thứ nhất, SymPy có thể giảm bớt các bước tính toán thủ công. Đối với những biểu thức hoặc hệ phương trình có nhiều bước biến đổi, việc sử dụng các lệnh phù hợp có thể giúp tìm kết quả nhanh chóng hơn.\\
+\noindent Thứ hai, SymPy có khả năng thực hiện tính toán chính xác dưới dạng ký hiệu. Điều này đặc biệt hữu ích khi cần làm việc với phân số, căn thức, biểu thức đại số hoặc nghiệm của phương trình.\\
+\noindent Thứ ba, SymPy có thể hỗ trợ kiểm tra kết quả. Sau khi giải một bài toán bằng phương pháp truyền thống, người học có thể sử dụng SymPy để kiểm tra nghiệm và đối chiếu với kết quả đã tìm được.\\
+\noindent Cuối cùng, việc sử dụng SymPy giúp kết hợp kiến thức toán học với công cụ lập trình, từ đó tạo thêm một phương pháp tiếp cận đối với các bài toán toán học.\\
+\noindent Tuy nhiên, SymPy chủ yếu đóng vai trò là công cụ hỗ trợ tính toán. Người sử dụng vẫn cần hiểu bài toán, xác định đúng các ẩn, lập phương trình và xem xét điều kiện của nghiệm.
+\subsubsection{Một số lĩnh vực có thể sử dụng SymPy}
+SymPy được sử dụng trong nhiều nội dung khác nhau của toán học. Một số lĩnh vực tiêu biểu gồm:
+\begin{itemize}[itemsep=4pt, parsep=2pt]
+    \item \textbf{Đại số:} khai triển, rút gọn và phân tích các biểu thức đại số.
+    \item \textbf{Phương trình và hệ phương trình:} tìm nghiệm của phương trình, hệ phương trình tuyến tính và phi tuyến.
+    \item \textbf{Giải tích:} tính giới hạn, đạo hàm, nguyên hàm và tích phân.
+    \item \textbf{Ma trận:} thực hiện các phép toán với ma trận, tính định thức và một số phép biến đổi liên quan.
+    \item \textbf{Đại số tuyến tính:} hỗ trợ các phép tính liên quan đến vector, ma trận và hệ phương trình tuyến tính.
+\end{itemize}
+
+\noindent Trong phạm vi đề tài \textbf{``Ứng dụng SymPy trong giải hệ phương trình''}, nhóm tập trung chủ yếu vào các chức năng của SymPy liên quan đến biểu diễn và giải hệ phương trình, đặc biệt là các lệnh được sử dụng trong Chương 2 và các bài toán áp dụng ở Chương 3.
+\subsection{Giới thiệu về bài toán giải hệ phương trình}
+\subsubsection{Khái niệm hệ phương trình}
+Hệ phương trình là tập hợp gồm từ hai phương trình trở lên có chung các ẩn. Nghiệm của hệ phương trình là một bộ giá trị của các ẩn đồng thời thỏa mãn tất cả các phương trình trong hệ.\\
+\noindent Ví dụ, xét hệ phương trình:
+\begin{center}
+    $\begin{cases}
+    x + y = 5 \\
+    2x - y = 1.
+\end{cases}$
+\end{center}
+Với $x=2,y=3$, ta có:
+\begin{center}
+    $2+3=5$
+\end{center}
+và
+\begin{center}
+    $2.2-3=1.$
+\end{center}
+Do đó, $(x,y)=(2,3)$ là nghiệm của hệ phương trình.
+\subsubsection{Hệ phương trình bậc nhất hai ẩn}
+Hệ phương trình bậc nhất hai ẩn có dạng tổng quát:
+\[
+\begin{cases}
+    a_1x + b_1y = c_1, \\
+    a_2x + b_2y = c_2,
+\end{cases}
+\]
+trong đó $x, y$ là các ẩn và $a_1, b_1, a_2, b_2, c_1, c_2$ là các số đã biết.\\
+\noindent Tùy thuộc vào mối quan hệ giữa các hệ số, hệ phương trình có thể có một nghiệm, vô nghiệm hoặc có vô số nghiệm.\\
+\noindent Ví dụ:
+\[
+\begin{cases}
+    x + y = 5, \\
+    2x - y = 1.
+\end{cases}
+\]
+
+\noindent Hệ phương trình trên có nghiệm duy nhất:
+\[
+(x, y) = (2, 3).
+\]
+
+\noindent Đây là dạng hệ phương trình cơ bản và thường được sử dụng để minh họa cách sử dụng các lệnh giải hệ phương trình trong SymPy.
+\subsubsection{Hệ phương trình bậc nhất nhiều ẩn}
+Hệ phương trình bậc nhất nhiều ẩn là hệ trong đó các phương trình đều có bậc nhất đối với các ẩn. Với ba ẩn $x, y, z$, hệ có thể có dạng:
+\[
+\begin{cases}
+    a_1x + b_1y + c_1z = d_1, \\
+    a_2x + b_2y + c_2z = d_2, \\
+    a_3x + b_3y + c_3z = d_3.
+\end{cases}
+\]
+
+\noindent Ví dụ:
+\[
+\begin{cases}
+    x + y + z = 6, \\
+    2x - y + z = 3, \\
+    x + 2y - z = 2.
+\end{cases}
+\]
+
+\noindent So với hệ hai ẩn, hệ nhiều ẩn thường có nhiều bước tính toán hơn khi giải bằng phương pháp thủ công. Vì vậy, các công cụ hỗ trợ tính toán như SymPy có thể giúp quá trình tìm nghiệm trở nên thuận tiện hơn.
+\subsubsection{Hệ phương trình phi tuyến}
+Hệ phương trình phi tuyến là hệ trong đó có ít nhất một phương trình không phải là phương trình bậc nhất đối với các ẩn. Hệ có thể xuất hiện các biểu thức như $x^2$, $y^2$, $xy$, $\sqrt{x}$,...\\
+\noindent Ví dụ:
+\[
+\begin{cases}
+    x^2 + y^2 = 25, \\
+    x + y = 7.
+\end{cases}
+\]
+\noindent Đây là một hệ phương trình phi tuyến vì phương trình thứ nhất chứa $x^2$ và $y^2$.\\
+\noindent Việc giải hệ phương trình phi tuyến thường phức tạp hơn so với hệ phương trình bậc nhất. Trong trường hợp này, SymPy có thể hỗ trợ tìm các nghiệm của hệ thông qua những lệnh phù hợp.
+\subsubsection{Một số phương pháp giải hệ phương trình}
+Trong toán học, hệ phương trình có thể được giải bằng nhiều phương pháp khác nhau. Đối với hệ phương trình bậc nhất, một số phương pháp thường gặp là phương pháp thế và phương pháp cộng đại số. Ngoài ra, có thể sử dụng các công cụ tính toán để hỗ trợ tìm và kiểm tra nghiệm.\\
+\noindent Trong đề tài này, nhóm tập trung vào việc sử dụng SymPy để hỗ trợ giải các hệ phương trình. Các lệnh và cách sử dụng cụ thể sẽ được trình bày ở Chương 2, sau đó được vận dụng vào các bài toán cụ thể ở Chương 3.
+\subsection{Vai trò của SymPy trong giải hệ phương trình}
+Việc giải hệ phương trình bằng các phương pháp truyền thống thường đòi hỏi người giải thực hiện nhiều bước biến đổi và tính toán. Khi số lượng ẩn hoặc độ phức tạp của hệ tăng lên, quá trình này có thể mất nhiều thời gian và dễ xảy ra sai sót. Trong trường hợp đó, SymPy có thể được sử dụng như một công cụ hỗ trợ tính toán.\\
+\noindent Ví dụ, với hệ:
+\begin{center}
+    \begin{cases}
+    x + y = 5 \\
+    2x - y = 1,
+\end{cases}
+\end{center}
+\noindent có thể biểu diễn các phương trình trong SymPy để chuẩn bị cho quá trình giải.
+\subsubsection{Hỗ trợ tìm nghiệm của hệ phương trình}
+SymPy cung cấp các lệnh phù hợp để tìm nghiệm của nhiều dạng hệ phương trình khác nhau. Đối với hệ phương trình tuyến tính, có thể sử dụng các lệnh như \texttt{solve()} hoặc \texttt{linsolve()}. Đối với một số hệ phương trình phi tuyến, có thể sử dụng \texttt{solve()} hoặc \texttt{nonlinsolve()} tùy trường hợp.
+\noindent Ví dụ, với hệ:
+\[
+\begin{cases}
+    x + y = 5, \\
+    2x - y = 1,
+\end{cases}
+\]
+\noindent SymPy có thể tìm được nghiệm:
+\[
+    x = 2, \quad y = 3.
+\]
+
+\noindent Các lệnh cụ thể và cách sử dụng sẽ được trình bày ở Chương 2.
+\subsubsection{Hỗ trợ kiểm tra kết quả}
+Bên cạnh việc tìm nghiệm, SymPy còn có thể hỗ trợ người sử dụng kiểm tra lại kết quả. Sau khi tìm được nghiệm, có thể thay các giá trị đó vào các phương trình ban đầu để kiểm tra xem chúng có thỏa mãn hệ hay không.\\
+\noindent Điều này giúp người học có thể đối chiếu kết quả khi giải bằng phương pháp truyền thống và phát hiện những sai sót trong quá trình tính toán nếu có.
+\subsubsection{Hỗ trợ xử lý các hệ phương trình phức tạp}
+Đối với những hệ phương trình có nhiều ẩn hoặc có dạng phi tuyến, việc giải bằng phương pháp thủ công có thể cần nhiều bước biến đổi. SymPy giúp thực hiện phần tính toán một cách nhanh chóng và cung cấp kết quả dưới dạng phù hợp để người sử dụng tiếp tục phân tích.\\
+\noindent Tuy nhiên, SymPy chỉ đóng vai trò hỗ trợ quá trình giải toán. Người sử dụng vẫn cần tự phân tích đề bài, xác định các ẩn, thiết lập hệ phương trình và xem xét điều kiện của nghiệm. Vì vậy, việc sử dụng SymPy cần được kết hợp với kiến thức toán học để đảm bảo kết quả thu được phù hợp với bài toán.
+\subsubsection{Ý nghĩa của việc sử dụng SymPy}
+Việc sử dụng SymPy trong giải hệ phương trình giúp kết hợp kiến thức toán học với công cụ lập trình, đồng thời tạo điều kiện để người học làm quen với cách sử dụng máy tính trong quá trình giải quyết bài toán. Qua đó, SymPy có thể được xem như một công cụ hỗ trợ tính toán, giúp giảm bớt các thao tác thủ công và thuận tiện hơn trong việc kiểm tra kết quả.
+\subsection{Môi trường sử dụng SymPy}
+Để sử dụng SymPy giải các bài toán về hệ phương trình, cần chuẩn bị môi trường lập trình và cài đặt thư viện SymPy. Trong đề tài này, nhóm sử dụng Python làm môi trường để chạy các chương trình có sử dụng SymPy.
+\subsubsection{Cài đặt SymPy}
+SymPy có thể được cài đặt thông qua công cụ \texttt{pip}. Trong cửa sổ Command Prompt (CMD), sử dụng lệnh \texttt{pip install sympy}.\\
+\noindent Sau khi quá trình cài đặt hoàn tất, thư viện SymPy có thể được sử dụng trong các chương trình Python.
+\subsubsection{Cách viết và chạy chương trình sử dụng SymPy}
+Có thể viết chương trình SymPy bằng các trình soạn thảo như Notepad, IDLE hoặc PyCharm và lưu chương trình với phần mở rộng \texttt{.py}.\\
+\noindent Ví dụ, tạo một tệp có tên \texttt{test.py} với nội dung:
+\begin{center}
+    \includegraphics[width=0.3\textwidth]{vidu1.png}
+\end{center}
+Sau khi lưu tệp, có thể chạy chương trình bằng CMD với lệnh \texttt{python test.py}\\
+\noindent Kết quả nhận được: \texttt{[3]}\\
+\noindent Qua ví dụ trên, có thể thấy quy trình sử dụng SymPy cơ bản gồm: cài đặt thư viện → viết chương trình → chạy chương trình → quan sát kết quả. Trong các phần tiếp theo, nhóm sẽ sử dụng quy trình này để thực hiện các lệnh liên quan đến giải hệ phương trình.
+\section{Chương 2. CÁC LỆNH SYMPY LIÊN QUAN ĐẾN GIẢI HỆ PHƯƠNG TRÌNH}
+\subsection{Khai báo biến và các đối tượng toán học}
+Trước khi thực hiện giải phương trình hay hệ phương trình trong SymPy, cần khai báo các biến toán học dưới dạng đối tượng ký hiệu (symbolic variables). Việc khai báo này giúp SymPy nhận biết các ẩn và thực hiện các phép tính đại số trên chúng.
+
+\noindent\textbf{Hàm \texttt{symbols()}}\\
+\textbf{Công dụng: }Dùng để khai báo một hoặc nhiều biến ký hiệu cùng lúc.\\
+\textbf{Cú pháp:} \texttt{sp.symbols('x y z')}\\
+\textbf{Ví dụ:}\\
+\texttt{import sympy as sp\\
+x, y, z = sp.symbols('x y z')}\\
+Sau khi khai báo, các biến \texttt{x, y, z} có thể được sử dụng trong việc xây dựng biểu thức, phương trình và hệ phương trình.\\
+Lưu ý: Cần khai báo các biến trước khi sử dụng chúng trong các phép tính của SymPy.
+\subsection{Biểu diễn phương trình}
+Trong SymPy, phương trình có thể được biểu diễn bằng hai cách phổ biến:\\
+\textbf{Cách 1: Sử dụng hàm \texttt{Eq()}}\\
+\textbf{Công dụng:} Dùng để biểu diễn một phương trình có dạng hai vế bằng nhau.\\
+\textbf{Cú pháp:} \texttt{sp.Eq(expr1, expr2)}\\
+Trong đó, \texttt{expr1} và \texttt{expr2} lần lượt là biểu thức ở vế trái và vế phải của phương trình.\\
+\textbf{Ví dụ:} Biểu diễn phương trình $x+y=5$ bằng SymPy theo cú pháp sau:\\
+\texttt{pt = sp.Eq(x + y, 5}\\
+\textbf{Cách 2: Biểu diễn phương trình dưới dạng biểu thức bằng 0}\\
+Ta chuyển tất cả các hạng tử sang vế trái để đưa phương trình về dạng $f(x,y)=0$.\\
+Ví dụ, phương trình $x+y=5$ được biểu diễn bằng lệnh:\\
+\texttt{pt = x + y - 5}\\
+Cả hai cách biểu diễn đều có thể được sử dụng trong các lệnh giải phương trình và hệ phương trình của SymPy.
+
+\subsection{Lệnh \texttt{solve()}}
+\texttt{solve()} là lệnh tổng quát được sử dụng để giải phương trình và hệ phương trình. Lệnh này có thể áp dụng cho nhiều dạng phương trình khác nhau, bao gồm cả phương trình tuyến tính và phi tuyến.\\
+\noindent \textbf{Cú pháp:} \texttt{sp.solve(equations, variables)}\\
+Trong đó:\\
+\texttt{equations}: Phương trình hoặc danh sách các phương trình cần giải.\\
+\texttt{variables}: Biến hoặc danh sách các biến cần tìm nghiệm.\\
+\noindent\textbf{Ví dụ:}\\
+Giải hệ phương trình:\\
+
+\[
+\begin{cases}
+x+y=5,\\
+2x-y=1.
+\end{cases}
+\]
+Chương trình:
+\begin{verbatim}
+import sympy as sp
+x, y = sp.symbols('x y')
+pt1 = sp.Eq(x + y, 5)
+pt2 = sp.Eq(2*x - y, 1)
+kq = sp.solve([pt1, pt2], (x, y), dict=True)
+print(kq)
+\end{verbatim}
+\textbf{Kết quả:}
+\texttt{[{x: 2, y: 3}]}\\
+Như vậy, hệ phương trình có nghiệm duy nhất:
+\[
+(x,y)=(2,3).
+\]
+Ở ví dụ trên, tùy chọn \texttt{dict=True} giúp kết quả được trả về dưới dạng danh sách các từ điển, trong đó mỗi biến được gắn với giá trị nghiệm tương ứng.
+
+\noindent\textbf{Lưu ý:} Nếu không sử dụng \texttt{dict=True}, kết quả trả về của \texttt{solve()} có thể có dạng khác nhau tùy thuộc vào bài toán.
+
+\subsection{Lệnh \texttt{linsolve()}}
+
+\texttt{linsolve()} là lệnh chuyên dụng để giải các hệ phương trình tuyến tính. Lệnh này hỗ trợ giải hệ phương trình có nhiều ẩn và có thể biểu diễn hệ thông qua danh sách phương trình hoặc ma trận hệ số.
+
+\noindent \textbf{Cú pháp:} \texttt{sp.linsolve([eq1, eq2, ...], (x, y, ...))}\\
+\noindent\textbf{Ví dụ minh họa:}
+
+\noindent\textbf{Ví dụ:}\\
+Giải hệ phương trình:
+
+\[
+\begin{cases}
+x+y+z=6,\\
+2x-y+z=3,\\
+x+2y-z=2.
+\end{cases}
+\]
+
+\noindent\text{Chương trình:}
+\begin{verbatim}
+import sympy as sp
+x, y, z = sp.symbols('x y z')
+pt1 = x + y + z - 6
+pt2 = 2*x - y + z - 3
+pt3 = x + 2*y - z - 2
+kq = sp.linsolve([pt1, pt2, pt3], (x, y, z))
+print(kq)
+\end{verbatim}
+
+\noindent\textbf{Kết quả:} \texttt{(1, 2, 3)}
+
+
+\noindent\text{Vậy hệ phương trình có nghiệm:}
+\[
+(x,y,z)=(1,2,3).
+\]
+\noindent\textbf{Cú pháp dạng ma trận:}
+\noindent\text{Đối với hệ phương trình tuyến tính có dạng:}
+\[
+AX=B,
+\]
+
+\noindent\text{trong đó $A$ là ma trận hệ số, $X$ là vector các ẩn và $B$ là vector các hệ số tự do, có thể sử dụng:}\\
+\texttt{sp.linsolve((A, B), (x, y, ...))}\\
+\noindent\text{Cách biểu diễn này thuận tiện khi giải các hệ phương trình tuyến tính có nhiều ẩn.}
+\noindent\textbf{Lưu ý:} Kết quả của \texttt{linsolve()} được trả về dưới dạng \texttt{FiniteSet}, trong đó mỗi phần tử là một bộ nghiệm tương ứng với các ẩn đã khai báo.
+
+\subsection{Lệnh \texttt{nonlinsolve()}}
+\texttt{nonlinsolve()} được sử dụng để giải các hệ phương trình phi tuyến, tức là những hệ có ít nhất một phương trình không phải phương trình bậc nhất đối với các ẩn.\\
+Lệnh này có thể xử lý các hệ chứa lũy thừa, tích giữa các biến và một số dạng biểu thức phi tuyến khác.\\
+\textbf{Cú pháp:} \texttt{nonlinsolve([eq1, eq2, ...], (x, y, ...))}\\
+Trong đó:\\
+\texttt{eq1, eq2, ...}: Các phương trình của hệ.\\
+\texttt{x, y...}: Các biến cần tìm nghiệm.\\
+\textbf{Ví dụ:} Giải hệ phương trình \begin{cases}
+    $x^2+y^2=25\\x+y=7.$
+\end{cases}\\
+Chương trình:\\
+\texttt{import sympy as sp\\
+x, y = sp.symbols('x y')\\ 
+pt1 = x**2 + y**2 - 25\\
+pt2 = x + y - 7 \\
+kq = sp.nonlinsolve([pt1, pt2], (x, y))\\
+print(kq)}\\
+Kết quả: \texttt{{(3, 4), (4, 3)}}
+\subsection{Một số lệnh hỗ trợ}
+Ngoài các lệnh trực tiếp phục vụ việc giải hệ phương trình, SymPy còn cung cấp một số lệnh hỗ trợ quá trình tính toán và kiểm tra kết quả.
+\subsubsection{Lệnh \texttt{sub()}}
+\textbf{Công dụng: }Dùng để thay thế giá trị của một biến trong biểu thức bằng một giá trị hoặc biểu thức khác.\\
+\textbf{Cú pháp:} \texttt{expr.subs(variable, value)}\\
+\textbf{Ví dụ: }\\
+\texttt{expr = x + y\\
+kq = expr.subs({x: 2, y: 3})\\
+print(kq)}
+\subsubsection{Lệnh \texttt{simplify()}}
+\textbf{Công dụng: }Dùng để rút gọn biểu thức toán học.\\
+\textbf{Cú pháp:} \texttt{simplify(expr)}\\
+\textbf{Ví dụ: }\\
+\texttt{expr = (x**2 - 1)/(x - 1)\\
+kq = sp.simplify(expr)\\
+print(kq)}
+\subsubsection{Lệnh \texttt{checksol()}}
+\textbf{Công dụng:} Dùng để kiểm tra một giá trị hoặc một bộ giá trị có thỏa mãn phương trình hay không.\\
+\textbf{Cú pháp: }\texttt{checksol(equation, solution)}\\
+\textbf{Ví dụ:}\\
+\texttt{pt = x + y - 5\\
+kq = sp.checksol(pt, {x: 2, y: 3})\\
+print(kq)}\\
+Kết quả: \texttt{True} cho biết bộ giá trị đã cho thỏa mãn phương trình đang xét.
+\subsection{Một số lưu ý khi sử dụng SymPy}
+
+Trong quá trình sử dụng SymPy để giải hệ phương trình, cần chú ý một số vấn đề sau:\\
+\textbf{Khai báo biến:} Cần khai báo các biến bằng \texttt{sp.symbols()} trước khi sử dụng.\\
+\textbf{Biểu diễn phương trình:} Có thể sử dụng \texttt{sp.Eq()} để biểu diễn phương trình hoặc đưa phương trình về dạng biểu thức bằng $0$.\\
+\textbf{Phép toán:} Sử dụng \texttt{**} cho phép lũy thừa, \texttt{*} cho phép nhân và \texttt{/} cho phép chia.\\
+\textbf{Chọn lệnh phù hợp:} Sử dụng \texttt{sp.linsolve()} cho hệ tuyến tính, \texttt{sp.nonlinsolve()} cho hệ phi tuyến và \texttt{sp.solve()} cho nhiều dạng phương trình khác nhau.\\
+\textbf{Kiểm tra nghiệm:} Sau khi tìm được nghiệm, nên thay nghiệm vào hệ phương trình ban đầu để kiểm tra kết quả.\\
+\textbf{Nghiệm của hệ:} Hệ phương trình có thể có một nghiệm, vô nghiệm hoặc vô số nghiệm. Cần dựa vào kết quả của SymPy để đưa ra kết luận.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%======CHƯƠNG 3=============
+\section{Chương 3. Áp dụng Sympy để giải quyết một số bài toán}
+\subsection{ Hệ phương trình bậc nhất hai ẩn}\\
+\vspace{0.25cm}
+\noindent\textbf{Bài 1:} Giải hệ phương trình:
+\begin{center}
+  $\begin{cases}
+  -x + 3y = -10,\\
+  x - 5y = 16.
+  \end{cases}$
+\end{center}
+\centerline{\textbf{Giải}}
+\begin{figure}[h]
+    \centering
+\includegraphics[width=0.7\textwidth]{ảnh 1.2.png}
+\end{figure}
+\noindent\textbf{Bài 2:} Giải hệ phương trình:
+\begin{center}
+   $\begin{cases}
+   \dfrac{1}{x}-\dfrac{1}{y}=1\\[0.25cm]
+   \dfrac{2}{x}+\dfrac{4}{y}=5.
+   \end{cases}$
+\end{center}
+\centerline{\textbf{Giải}}
+\begin{figure}[h]
+    \centering
+\includegraphics[width=0.7\textwidth]{anh 2.1.png}
+\end{figure}
+\newpage
+\noindent\textbf{Bài 3:} Giải hệ phương trình:
+\begin{center}
+   $\begin{cases}
+   \dfrac{2}{x + 1} + \dfrac{3}{y} = 1 \\[12pt]
+   \dfrac{2}{x + 1} + \dfrac{5}{y} = 1
+\end{cases}$
+\end{center}
+\centerline{\textbf{Giải}}
+\begin{figure}[h]
+    \centering
+\includegraphics[width=0.7\textwidth]{anh 3.1.png}
+\end{figure}\\
+\subsection{ Hệ phương trình phi tuyến tính}\\
+\noindent\textbf{Bài 1:} Giải hệ phương trình:
+\begin{center}
+$\begin{cases}
+x^2 + y = 5 \\
+x + y^2 = 7
+\end{cases}$
+\end{center}
+\centerline{\textbf{Giải}} 
+\begin{figure}[h]
+    \centering
+\includegraphics[width=0.9\textwidth]{anh 4.1.png}
+\end{figure}\\
+\noindent\ Khi giải các hệ phương trình phi tuyến tính bằng các câu lệnh giải đại số thông thường (như solve), kết quả thu được thường ở dạng nghiệm chính xác (biểu thức căn thức, phân thức phức tạp) khiến lời giải trở nên rất dài và khó quan sát. Do đó, việc chuyển sang sử dụng lệnh nsolve là giải pháp tối ưu nhằm tìm nghiệm số xấp xỉ, giúp kết quả hiển thị gọn gàng, rõ ràng và thuận tiện hơn cho việc tính toán tiếp theo.
+\begin{figure}[h]
+    \centering
+\includegraphics[width=0.7\textwidth]{anh 5.1.png}
+\end{figure}\\
+\newpage
+\noindent\textbf{Bài 2:} Giải hệ phương trình:
+\begin{center}
+   $\begin{cases}
+   x^2 + y^2 = 2x^2 y^2 \\[6pt]
+   (x + y)(1 + xy) = 4x^2 y^2
+   \end{cases}$
+\end{center}
+\centerline{\textbf{Giải}}
+\begin{figure}[h]
+    \centering
+\includegraphics[width=0.7\textwidth]{anh 6.1.png}
+\end{figure}
+\subsection{Hệ phương trình tuyến tính nhiều ẩn}\\
+\noindent\textbf{Bài 1:} Giải hệ phương trình:
+\begin{center}
+$\begin{cases}
+3x + 2y - 5z = -3 \\
+2x + y + 3z = 11 \\
+4x + 3y - 12z = -15
+\end{cases}$
+\end{center}
+\centerline{\textbf{Giải}}
+\begin{figure}[h]
+    \centering
+\includegraphics[width=0.7\textwidth]{anh7.1.png}
+\end{figure}
+\noindent\textbf{Bài 2:} Giải hệ phương trình:
+\begin{center}
+$\begin{cases}
+2x_1 - x_2 + 4x_3 + 2x_4 = 2 \\
+3x_1 - 2x_2 + 7x_3 + 2x_4 = 1 \\
+5x_1 - 3x_2 + 7x_3 + 6x_4 = 5
+\end{cases}$
+\end{center}
+\centerline{\textbf{Giải}}
+\begin{figure}[h]
+    \centering
+\includegraphics[width=0.7\textwidth]{anh 8.1.png}
+\end{figure}
+\newpage
+\subsection{Bài toán thực tế đưa về hệ phương trình }\\
+\noindent\textbf{Bài 1:} Một trường THCS mua $500$ quyển vở để làm phần thưởng cho học sinh. Giá bán của mỗi quyển vở loại I, loại II lần lượt là $8000$ và $9000$ đồng. Hỏi trường đã mua mỗi loại bao nhiêu quyển vở, biết rằng tổng số tiền đã dùng là $4.200.000$ đồng.\\
+\noindent\textbf{Hướng dẫn giải:}\\
+\textbf{Bước 1: Đặt ẩn}\\
+    Gọi $x, y$ lần lượt là số quyển vở loại I, loại II đã mua (điều kiện: $x, y \in \mathbb{N}^*$).
+    
+    \noindent \textbf{Bước 2: Lập hệ phương trình}
+    
+        \noindent Tổng số vở đã mua là $500$ quyển nên ta có phương trình: 
+        \begin{equation}
+            x + y = 500 
+        \end{equation}
+        \item Tổng số tiền đã dùng để mua vở là $4.200.000$ đồng (tương đương $4200$ nghìn đồng) nên ta có phương trình:
+        \begin{equation}
+            8000x + 9000y = 4200000 \iff 8x + 9y = 4200 
+        \end{equation}
+    
+   \noindent Từ $(1)$ và $(2)$ ta có hệ phương trình:
+    \begin{equation}
+        \begin{cases} 
+            x + y = 500  \\ 
+            8x + 9y = 4200  
+        \end{cases}
+    \end{equation}
+    \item \textbf{Bước 3: Giải hệ phương trình}\\
+   \begin{figure}[h]
+    \centering
+   \includegraphics[width=0.8\textwidth]{anh 10.1.png}
+   \end{figure}
+ \item \textbf{Bước 4: Kết luận}\\
+    Vậy số quyển vở loại I và loại II mà trường đã mua lần lượt là $300$ quyển và $200$ quyển.
+\end{itemize}
+\vspace{0.7em}
+\noindent\textbf{Bài 2:} Bác Phương chia số tiền 800 triệu đồng của mình cho hai khoản đầu tư. Sau một năm, tổng số tiền lãi thu được là 54 triệu đồng. Lãi suất cho khoản đầu tư thứ nhất là $6\%/\text{năm}$ và khoản đầu tư thứ hai là $8\%/\text{năm}$. Tính số tiền bác Phương đầu tư cho mỗi khoản.\\
+\noindent\textbf{Hướng dẫn giải:}
+
+   \noindent \textbf{Bước 1: Đặt ẩn và điều kiện}\\
+    Gọi $x$ (triệu đồng) là số tiền bác Phương đầu tư cho khoản thứ nhất, điều kiện: $0 < x < 800$.\\
+    Gọi $y$ (triệu đồng) là số tiền bác Phương đầu tư cho khoản thứ hai.\\
+ \noindent\textbf{Bước 2: Lập hệ phương trình}\\
+\noindent Vì tổng số tiền đầu tư là 800 triệu đồng nên ta có phương trình:
+        \begin{equation*}
+            x + y = 800 \quad (1)
+        \end{equation*}
+\noindent Số tiền lãi từ khoản thứ nhất là $0{,}06x$ (triệu đồng), số tiền lãi từ khoản thứ hai là $0{,}08y$ (triệu đồng). Tổng số tiền lãi là 54 triệu đồng nên ta có phương trình:
+        \begin{equation*}
+            0{,}06x + 0{,}08y = 54 \quad (2)
+        \end{equation*}
+    
+  \noindent  Từ $(1)$ và $(2)$ ta có hệ phương trình:
+    \begin{equation*}
+        \begin{cases} 
+            x + y = 800 \\ 
+            0{,}06x + 0{,}08y = 54 
+        \end{cases}
+    \end{equation*}
+    \item \textbf{Bước 3: Giải hệ phương trình}\\
+    \begin{figure}[h]
+    \centering
+   \includegraphics[width=0.8\textwidth]{anh 11.1.png}
+   \end{figure}
+    \item \textbf{Bước 4: Kết luận}\\
+    Vậy số tiền bác Phương đầu tư cho khoản thứ nhất là $500$ triệu đồng và khoản thứ hai là $300$ triệu đồng.
+
+\section{Kết luận}\\
+\noindent Qua quá trình tìm hiểu và thực hiện đề tài \textbf{"Ứng dụng SymPy trong giải hệ phương trình"}, nhóm đã có cơ hội nghiên cứu những kiến thức cơ bản về thư viện SymPy và cách vận dụng thư viện này để giải quyết các bài toán liên quan đến hệ phương trình. Đề tài đã trình bày khái quát về SymPy, giới thiệu các lệnh thường dùng trong giải hệ phương trình như \texttt{solve(), linsolve() và nonlinsolve()}, đồng thời áp dụng các lệnh đó vào nhiều dạng bài toán khác nhau như hệ phương trình bậc nhất hai ẩn, hệ phương trình tuyến tính nhiều ẩn, hệ phương trình phi tuyến và một số bài toán thực tế.
+
+\noindent Thông qua các ví dụ minh họa, có thể thấy SymPy là một công cụ hỗ trợ tính toán hiệu quả, giúp rút ngắn thời gian giải toán, hạn chế sai sót trong quá trình tính toán và hỗ trợ kiểm tra kết quả một cách nhanh chóng. Bên cạnh đó, việc sử dụng SymPy còn góp phần giúp người học làm quen với lập trình Python và nâng cao khả năng kết hợp giữa kiến thức toán học với công nghệ trong học tập.
+
+\noindent Tuy nhiên, SymPy chỉ đóng vai trò là công cụ hỗ trợ. Để sử dụng hiệu quả, người học vẫn cần nắm vững kiến thức toán học, biết cách phân tích đề bài, xây dựng mô hình toán học và đánh giá tính hợp lý của kết quả thu được. Vì vậy, việc kết hợp giữa tư duy toán học và công cụ lập trình sẽ mang lại hiệu quả cao hơn trong quá trình giải quyết các bài toán.
+\newpage
+\section*{TÀI LIỆU THAM KHẢO}
+\addcontentsline{toc}{section}{TÀI LIỆU THAM KHẢO}
+1. Hà Huy Khoái (Tổng chủ biên). \textit{Toán 9, Tập một: Kết nối tri thức với cuộc sống}. Nhà xuất bản Giáo dục Việt Nam, 2024.\\
+2. Hà Huy Khoái (Tổng chủ biên). \textit{Toán 10 – Kết nối tri thức với cuộc sống}. Nhà xuất bản Giáo dục Việt Nam, 2022.\\
+3. Nguyễn Duy Thuận (chủ biên), Phi Mạnh Ban, Nông Quốc Chinh, \textit{Đại số tuyến tính}, Nhà xuất bản Đại học Sư phạm.\\
+4. Trần Đình Quang, \textit{Lập trình Python từ cơ bản đến nâng cao và ứng dụng tính toán khoa học}. Nhà xuất bản Thông tin và Truyền thông, 2021.\\
+5. SymPy Development Team (không ghi năm), Solvers [Các công cụ giải phương trình]. Truy cập tại: 
+https://docs.sympy.org/latest/modules/solvers/solvers.html
+\end{document}
